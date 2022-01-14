@@ -1,54 +1,106 @@
 export const movies = [
     {
         id: 1,
-        title: "O jogo da imitação",
+        movieTitle: "O jogo da imitação",
         parentalRating: "12",
-        release: "0"
+        newRelease: "não"
     },{
         id: 2,
-        title: "A teoria de tudo",
+        movieTitle: "A teoria de tudo",
         parentalRating: "10",
-        release: "0"
+        newRelease: "não"
     },{
         id: 3,
-        title: "Piratas do Caribe",
+        movieTitle: "Piratas do Caribe",
         parentalRating: "14",
-        release: "0"
+        newRelease: "não"
     },{
         id: 4,
-        title: "Não olhe para cima",
+        movieTitle: "Não olhe para cima",
         parentalRating: "18",
-        release: "1"
+        newRelease: "sim"
     },{
         id: 5,
-        title: "Vingança e Castigo",
+        movieTitle: "Vingança e Castigo",
         parentalRating: "18",
-        release: "0"
+        newRelease: "não"
     },{
         id: 6,
-        title: "O Esquadrão Suicida",
+        movieTitle: "O Esquadrão Suicida",
         parentalRating: "16",
-        release: "0"
+        newRelease: "não"
     },{
         id: 7,
-        title: "Eternos",
+        movieTitle: "Eternos",
         parentalRating: "14",
-        release: "1"
+        newRelease: "sim"
     },{
         id: 8,
-        title: "Shang-Chi e a Lenda dos Dez Anéis",
+        movieTitle: "Shang-Chi e a Lenda dos Dez Anéis",
         parentalRating: "10",
-        release: "1"
+        newRelease: "sim"
     },{
         id: 9,
-        title: "Homem-Aranha: Sem Volta para Casa",
+        movieTitle: "Homem-Aranha: Sem Volta para Casa",
         parentalRating: "12",
-        release: "1"
+        newRelease: "sim"
     },{
         id: 10,
-        title: "Uma mente brilhante",
+        movieTitle: "Uma mente brilhante",
         parentalRating: "10",
-        release: "0"
+        newRelease: "não"
     },
 
 ]
+
+function categoryFilters (table, category) {
+    const filters = {}
+
+    table.forEach(element => {
+        filters[element[category]] = element[category]
+    });
+
+    const filterList = []
+
+    for (const [key, value] of Object.entries(filters)) {
+        filterList.push(
+            {
+                text: key,
+                value: value
+            }
+        )                
+    }
+
+    return filterList
+}
+
+export const columns = [
+    {
+      title: 'Id',
+      dataIndex: 'id',
+      key: 'id',
+      sorter: (a, b) => a.id - b.id,
+    },
+    {
+      title: 'Título',
+      dataIndex: 'movieTitle',
+      key: 'movieTitle',
+      sorter: (a, b) => a.movieTitle.localeCompare(b.movieTitle)
+    },
+    {
+      title: 'Classificação Indicativa',
+      dataIndex: 'parentalRating',
+      key: 'parentalRating',
+      sorter: (a, b) => a.parentalRating - b.parentalRating,
+        filters: categoryFilters(movies, 'parentalRating'),
+        onFilter: (value, record) => record.parentalRating.indexOf(value) === 0,
+    },
+    {
+        title: 'Lançamento',
+        dataIndex: 'newRelease',
+        key: 'newRelease',
+        filters: categoryFilters(movies, 'newRelease'),
+        onFilter: (value, record) => record.newRelease.indexOf(value) === 0,
+    },
+  ];
+  

@@ -2,8 +2,8 @@ import {
     Route, Routes as Switch,
   } from 'react-router-dom';
   import React from 'react';
-import { HomePage } from './pages/homepage/HomePage';
-import { Movies } from './pages/movies/Movies';
+import { HomePage } from './pages/homepage';
+import { Movies } from './pages/movies';
 
   
   export default function Routes() {
