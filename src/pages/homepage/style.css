@@ -1,10 +1,5 @@
-.header {
-    height: 80px;
-}
+
 .content {
     min-height: calc(100vh - 120px);
     height: 100%;
-}
-.footer {
-    height: 40px;
 }

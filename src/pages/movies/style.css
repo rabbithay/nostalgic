@@ -1,14 +1,7 @@
-.header {
-    height: 80px;
-}
+
 .content {
-    padding: 50px;
-    min-height: calc(100vh - 120px);
-    height: 100%;
+    padding: 100px 10vw 0px 10vw;
+    min-height: calc(100vh - 100px);
+    height: auto;
 }
-.footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-}
+
