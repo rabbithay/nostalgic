@@ -6,6 +6,6 @@ export default function FooterComponent() {
   const { Footer } = Layout;
 
   return (
-    <Footer className="footer">created by @rabbithay</Footer>
+    <Footer className="footer">developed by @rabbithay</Footer>
   );
 }

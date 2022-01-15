@@ -9,7 +9,7 @@ export default function HeaderComponent() {
 
   return (
     <Header className="header">
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
         <Menu.Item key="1" onClick={() => navigate('/filmes')}>Filmes</Menu.Item>
         <Menu.Item key="2" onClick={() => navigate('/clientes')}>Clientes</Menu.Item>
         <Menu.Item key="3" onClick={() => navigate('/alugueis')}>Aluguéis</Menu.Item>

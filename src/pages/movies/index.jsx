@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Table } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
@@ -8,7 +8,13 @@ import './style.css';
 import { categoryFilters } from '../../utils/generateFilterList';
 
 export function Movies() {
+  const [movieList, setMovieList] = useState(movies);
+
   const { Content } = Layout;
+
+  function handleDelete(movieId) {
+    setMovieList(movieList.filter((movie) => movie.id !== movieId));
+  }
 
   const columns = [
     {
@@ -42,14 +48,14 @@ export function Movies() {
       title: 'Deletar',
       dataIndex: '',
       key: 'x',
-      render: () => <DeleteOutlined />,
+      render: (trash) => <DeleteOutlined onClick={() => handleDelete(trash.id)} />,
     },
   ];
 
   return (
     <Layout>
       <Content className="content">
-        <Table dataSource={movies} columns={columns} />
+        <Table dataSource={movieList || []} columns={columns} />
       </Content>
     </Layout>
   );

@@ -1,7 +1,7 @@
 
 .content {
     padding: 100px 10vw 0px 10vw;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 48px);
     height: auto;
 }
 

@@ -21,3 +21,7 @@ You may also see any lint errors in the console.
 ## Design with Ant Design
 
 The design of this project was implemented using [Ant Design](https://ant.design/), a design system for enterprise-level products.
+
+## Thanks for
+
+- [Videocassette Icon](https://iconscout.com/icon/videocassette-tap-vhs-video) By [Twitter Emoji](https://iconscout.com/contributors/twitter-inc)
