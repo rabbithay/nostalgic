@@ -20,5 +20,6 @@ module.exports = {
   rules: {
     'import/prefer-default-export': 0,
     'react/prop-types': ['off'],
+    'react/jsx-props-no-spreading': 0,
   },
 };

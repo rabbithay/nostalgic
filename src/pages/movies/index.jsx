@@ -128,7 +128,12 @@ export function Movies() {
           <Button type="primary" icon={<PlusOutlined />} size="medium" onClick={showModal}>
             Novo filme
           </Button>
-          <NewMovieModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
+          <NewMovieModal
+            isModalVisible={isModalVisible}
+            setIsModalVisible={setIsModalVisible}
+            tableData={movieList}
+            setTableData={setMovieList}
+          />
         </div>
         <Form form={form} component={false}>
           <Table
