@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Layout, Table, Modal, Form, Typography, Button,
+  Layout, Table, Form, Typography, Button,
 } from 'antd';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 
@@ -8,18 +8,17 @@ import './style.css';
 import { movies } from '../../data/movies';
 import { categoryFilters } from '../../utils/generateFilterList';
 import { EditableCell } from '../../components/EditableCell';
-import * as handleTable from '../../utils/tableActions';
+import useTable from '../../hooks/useTable';
+import NewMovieModal from './NewMovieModal';
 
 export function Movies() {
-  const [form] = Form.useForm();
   const [movieList, setMovieList] = useState(movies);
-  const [isEditingKey, setIsEditingKey] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [confirmLoading, setModalConfirmLoading] = useState(false);
-
   const { Content } = Layout;
-
-  const isEditing = (record) => record.id === isEditingKey;
+  const handleTable = useTable(movieList, setMovieList);
+  const {
+    isEditing, form, editingKey, saveEdit, cancelEdit, edit,
+  } = handleTable;
 
   const columns = [
     {
@@ -60,8 +59,9 @@ export function Movies() {
       render: (record) => (
         <Typography.Link
           onClick={() => handleTable.deleteRow({
-            tableData: movieList, setTableData: setMovieList, rowId: record.id,
+            rowId: record.id,
           })}
+          disabled={editingKey !== ''}
         >
           <DeleteOutlined />
         </Typography.Link>
@@ -77,12 +77,8 @@ export function Movies() {
           editable ? (
             <span>
               <Typography.Link
-                onClick={() => handleTable.saveEdit({
-                  useForm: form,
-                  tableData: movieList,
-                  setTableData: setMovieList,
+                onClick={() => saveEdit({
                   key: record.id,
-                  setIsEditingKey,
                 })}
                 style={{
                   marginRight: 8,
@@ -90,12 +86,12 @@ export function Movies() {
               >
                 Save
               </Typography.Link>
-              <Typography.Link onClick={() => handleTable.cancelEdit({ setIsEditingKey })}>
+              <Typography.Link onClick={() => cancelEdit()}>
                 Cancel
               </Typography.Link>
             </span>
           ) : (
-            <Typography.Link disabled={isEditingKey !== ''} onClick={() => handleTable.edit({ useForm: form, rowData: record, setIsEditingKey })}>
+            <Typography.Link disabled={editingKey !== ''} onClick={() => edit({ rowData: record })}>
               <EditOutlined />
             </Typography.Link>
           )
@@ -125,18 +121,6 @@ export function Movies() {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setModalConfirmLoading(true);
-    setTimeout(() => {
-      setIsModalVisible(false);
-      setModalConfirmLoading(false);
-    }, 2000);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
   return (
     <Layout>
       <Content className="content">
@@ -144,11 +128,7 @@ export function Movies() {
           <Button type="primary" icon={<PlusOutlined />} size="medium" onClick={showModal}>
             Novo filme
           </Button>
-          <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} confirmLoading={confirmLoading}>
-            <p>The modal will be closed after two seconds</p>
-
-          </Modal>
-
+          <NewMovieModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
         </div>
         <Form form={form} component={false}>
           <Table
