@@ -1,93 +1,25 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/prop-types */
-
 import React, { useState } from 'react';
 import {
-  Layout, Table, Form, Typography, InputNumber, Input,
+  Layout, Table, Modal, Form, Typography, Button,
 } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 
-import { movies } from '../../data/movies';
 import './style.css';
+import { movies } from '../../data/movies';
 import { categoryFilters } from '../../utils/generateFilterList';
-
-function EditableCell({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-}
+import { EditableCell } from '../../components/EditableCell';
+import * as handleTable from '../../utils/tableActions';
 
 export function Movies() {
   const [form] = Form.useForm();
   const [movieList, setMovieList] = useState(movies);
   const [isEditingKey, setIsEditingKey] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [confirmLoading, setModalConfirmLoading] = useState(false);
 
   const { Content } = Layout;
 
   const isEditing = (record) => record.id === isEditingKey;
-
-  function handleDelete(movieId) {
-    setMovieList(movieList.filter((movie) => movie.id !== movieId));
-  }
-
-  function handleEdit(movieInfo) {
-    form.setFieldsValue({
-      ...movieInfo,
-    });
-    setIsEditingKey(movieInfo.id);
-  }
-
-  function handleCancelEdit() {
-    setIsEditingKey('');
-  }
-
-  async function handleSaveEdit(id) {
-    try {
-      const row = await form.validateFields();
-      const newData = [...movieList];
-      const index = newData.findIndex((movie) => id === movie.id);
-
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-      } else {
-        newData.push(row);
-      }
-      setMovieList(newData);
-      setIsEditingKey('');
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
-    }
-  }
 
   const columns = [
     {
@@ -125,33 +57,45 @@ export function Movies() {
       title: 'Apagar',
       dataIndex: '',
       key: 'x',
-      render: (action) => (
-        <DeleteOutlined onClick={() => handleDelete(action.id)} />
+      render: (record) => (
+        <Typography.Link
+          onClick={() => handleTable.deleteRow({
+            tableData: movieList, setTableData: setMovieList, rowId: record.id,
+          })}
+        >
+          <DeleteOutlined />
+        </Typography.Link>
       ),
     },
     {
       title: 'Editar',
       dataIndex: 'edit',
       key: 'edit',
-      render: (_, action) => {
-        const editable = isEditing(action);
+      render: (_, record) => {
+        const editable = isEditing(record);
         return (
           editable ? (
             <span>
               <Typography.Link
-                onClick={() => handleSaveEdit(action.id)}
+                onClick={() => handleTable.saveEdit({
+                  useForm: form,
+                  tableData: movieList,
+                  setTableData: setMovieList,
+                  key: record.id,
+                  setIsEditingKey,
+                })}
                 style={{
                   marginRight: 8,
                 }}
               >
                 Save
               </Typography.Link>
-              <Typography.Link onClick={() => handleCancelEdit()}>
+              <Typography.Link onClick={() => handleTable.cancelEdit({ setIsEditingKey })}>
                 Cancel
               </Typography.Link>
             </span>
           ) : (
-            <Typography.Link disabled={isEditingKey !== ''} onClick={() => handleEdit(action)}>
+            <Typography.Link disabled={isEditingKey !== ''} onClick={() => handleTable.edit({ useForm: form, rowData: record, setIsEditingKey })}>
               <EditOutlined />
             </Typography.Link>
           )
@@ -177,9 +121,35 @@ export function Movies() {
     };
   });
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setModalConfirmLoading(true);
+    setTimeout(() => {
+      setIsModalVisible(false);
+      setModalConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <Layout>
       <Content className="content">
+        <div className="plus-button">
+          <Button type="primary" icon={<PlusOutlined />} size="medium" onClick={showModal}>
+            Novo filme
+          </Button>
+          <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} confirmLoading={confirmLoading}>
+            <p>The modal will be closed after two seconds</p>
+
+          </Modal>
+
+        </div>
         <Form form={form} component={false}>
           <Table
             dataSource={movieList}

@@ -5,3 +5,9 @@
     height: auto;
 }
 
+.plus-button {
+    margin: 10px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
