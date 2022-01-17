@@ -1,13 +1,14 @@
 import {
-  Form, Input, Button,
+  Form, Input, Button, DatePicker,
 } from 'antd';
 import React from 'react';
+import dayjs from 'dayjs';
 
 export function NewCustomerForm({
   confirmLoading, setModalConfirmLoading, setIsModalVisible, handleCancel, setTableData, tableData,
 }) {
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    console.error('Received values of form: ', values);
 
     setModalConfirmLoading(true);
     const {
@@ -20,7 +21,7 @@ export function NewCustomerForm({
       id: (tableData[tableData.length - 1].id + 1),
       name,
       cpf,
-      birthdate,
+      birthdate: dayjs(birthdate).format('DD/MM/YY'),
     };
 
     setTableData([
@@ -70,12 +71,13 @@ export function NewCustomerForm({
         name="birthdate"
         rules={[{ required: true }]}
       >
-        <Input />
+        <DatePicker />
       </Form.Item>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
         <Button key="back" onClick={handleCancel}>
           Cancelar
         </Button>
+        {' '}
         <Button type="primary" htmlType="submit" className="new-customer-button" loading={confirmLoading}>
           Confirmar
         </Button>

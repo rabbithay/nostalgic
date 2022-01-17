@@ -107,14 +107,54 @@ export function Movies() {
       return col;
     }
 
+    const columnsInputType = {
+      movieTitle: 'text',
+      parentalRating: 'select',
+      newRelease: 'select',
+    };
+
+    const columnsSelectOptions = {
+      parentalRating: [
+        {
+          value: 'livre',
+          text: 'Livre',
+        }, {
+          value: '10',
+          text: '10',
+        }, {
+          value: '12',
+          text: '12',
+        }, {
+          value: '14',
+          text: '14',
+        }, {
+          value: '16',
+          text: '16',
+        }, {
+          value: '18',
+          text: '18',
+        },
+      ],
+      newRelease: [
+        {
+          value: 'sim',
+          text: 'sim',
+        }, {
+          value: 'não',
+          text: 'não',
+        },
+      ],
+    };
+
     return {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'parentalRating' ? 'number' : 'text',
+        inputType: columnsInputType[col.dataIndex],
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
+        selectOptions: columnsSelectOptions[col.dataIndex],
       }),
     };
   });

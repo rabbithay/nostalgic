@@ -1,19 +1,25 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
+import { PageHeader, Button } from 'antd';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 
 export default function HeaderComponent() {
-  const { Header } = Layout;
   const navigate = useNavigate();
 
   return (
-    <Header className="header">
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-        <Menu.Item key="1" onClick={() => navigate('/filmes')}>Filmes</Menu.Item>
-        <Menu.Item key="2" onClick={() => navigate('/clientes')}>Clientes</Menu.Item>
-        <Menu.Item key="3" onClick={() => navigate('/alugueis')}>Aluguéis</Menu.Item>
-      </Menu>
-    </Header>
+
+    <PageHeader
+      className="header"
+      ghost={false}
+      onBack={() => window.history.back()}
+      title="NostalgicVHS"
+      subTitle="Sistema de gestão de locação filmes"
+      extra={[
+        <Button onClick={() => navigate('/')} key="1">Filmes</Button>,
+        <Button onClick={() => navigate('/clientes')} key="2">Clientes</Button>,
+        <Button onClick={() => navigate('/alugueis')} key="3">Aluguéis</Button>,
+
+      ]}
+    />
   );
 }

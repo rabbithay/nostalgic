@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import {
-  Form, InputNumber, Input,
+  Form, InputNumber, Input, Select,
 } from 'antd';
 
 export function EditableCell({
@@ -11,11 +11,27 @@ export function EditableCell({
   title,
   inputType,
   record,
-  index,
   children,
+  selectOptions,
   ...restProps
 }) {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+  const typeInputNode = {
+    text: <Input />,
+    number: <InputNumber />,
+    select: selectOptions
+  && (
+  <Select>
+    {
+      selectOptions.map((option) => (
+        <Select.Option value={option.value}>{option.text}</Select.Option>
+      ))
+    }
+  </Select>
+  ),
+  };
+
+  const inputNode = typeInputNode[inputType];
+
   return (
     <td {...restProps}>
       {editing ? (

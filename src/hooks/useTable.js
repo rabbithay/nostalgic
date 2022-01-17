@@ -40,7 +40,7 @@ function useTable(tableData, setTableData) {
       setTableData(newData);
       setEditingKey('');
     } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+      console.error('Validate Failed:', errInfo);
     }
   }
 

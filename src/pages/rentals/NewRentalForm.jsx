@@ -1,25 +1,33 @@
 import {
-  Form, Input, Button, Select, Switch,
+  Form, Button, DatePicker, InputNumber,
 } from 'antd';
 import React from 'react';
+import dayjs from 'dayjs';
 
-export function NewMovieForm({
+export function NewRentalForm({
   confirmLoading, setModalConfirmLoading, setIsModalVisible, handleCancel, setTableData, tableData,
 }) {
   const onFinish = (values) => {
     setModalConfirmLoading(true);
-    const { title, parentalRating, newRelease } = values;
+    const {
+      clientId,
+      movieId,
+      rentDate,
+      returnDate,
+    } = values;
 
-    const newMovieInfo = {
+    console.log(rentDate);
+    const newRentalInfo = {
       id: (tableData[tableData.length - 1].id + 1),
-      movieTitle: title,
-      parentalRating,
-      newRelease: (newRelease) ? 'sim' : 'não',
+      clientId,
+      movieId,
+      rentDate: dayjs(rentDate).format('DD/MM/YY'),
+      returnDate: returnDate ? dayjs(returnDate).format('DD/MM/YY') : '',
     };
 
     setTableData([
       ...tableData,
-      newMovieInfo,
+      newRentalInfo,
     ]);
 
     setTimeout(() => {
@@ -41,42 +49,42 @@ export function NewMovieForm({
     <Form
       {...layout}
       name="basic"
-      className="new-movie"
+      className="new-rental"
       initialValues={{ remember: true }}
       onFinish={onFinish}
     >
       <Form.Item
-        label="Título"
-        name="title"
+        label="Id do cliente"
+        name="clientId"
         rules={[{ required: true }]}
       >
-        <Input />
+        <InputNumber />
       </Form.Item>
       <Form.Item
-        label="Classificação indicativa"
-        name="parentalRating"
+        label="Id do filme"
+        name="movieId"
         rules={[{ required: true }]}
       >
-        <Select>
-          <Select.Option value="livre">Livre</Select.Option>
-          <Select.Option value="10">10</Select.Option>
-          <Select.Option value="12">12</Select.Option>
-          <Select.Option value="14">14</Select.Option>
-          <Select.Option value="16">16</Select.Option>
-          <Select.Option value="18">18</Select.Option>
-        </Select>
+        <InputNumber />
       </Form.Item>
-
-      <Form.Item name="newRelease" label="Lançamento" valuePropName="newRelease">
-        <Switch />
+      <Form.Item
+        label="Data da locação"
+        name="rentDate"
+        rules={[{ required: true }]}
+      >
+        <DatePicker />
       </Form.Item>
-
+      <Form.Item
+        label="Data da devolução"
+        name="returnDate"
+      >
+        <DatePicker />
+      </Form.Item>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
         <Button key="back" onClick={handleCancel}>
           Cancelar
         </Button>
-        {' '}
-        <Button type="primary" htmlType="submit" className="new-movie-button" loading={confirmLoading}>
+        <Button type="primary" htmlType="submit" className="new-rental-button" loading={confirmLoading}>
           Confirmar
         </Button>
       </Form.Item>
