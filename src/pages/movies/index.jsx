@@ -9,7 +9,8 @@ import { movies } from '../../data/movies';
 import { categoryFilters } from '../../utils/generateFilterList';
 import { EditableCell } from '../../components/EditableCell';
 import useTable from '../../hooks/useTable';
-import NewMovieModal from './NewMovieModal';
+import { NewMovieForm } from './NewMovieForm';
+import OpenModal from '../../components/Modal';
 
 export function Movies() {
   const [movieList, setMovieList] = useState(movies);
@@ -19,6 +20,7 @@ export function Movies() {
   const {
     isEditing, form, editingKey, saveEdit, cancelEdit, edit,
   } = handleTable;
+  const [confirmLoading, setModalConfirmLoading] = useState(false);
 
   const columns = [
     {
@@ -121,6 +123,21 @@ export function Movies() {
     setIsModalVisible(true);
   };
 
+  const cancelModalVisibility = () => {
+    setIsModalVisible(false);
+  };
+
+  const modalContent = (
+    <NewMovieForm
+      confirmLoading={confirmLoading}
+      setModalConfirmLoading={setModalConfirmLoading}
+      setIsModalVisible={setIsModalVisible}
+      handleCancel={cancelModalVisibility}
+      setTableData={setMovieList}
+      tableData={movieList}
+    />
+  );
+
   return (
     <Layout>
       <Content className="content">
@@ -128,11 +145,15 @@ export function Movies() {
           <Button type="primary" icon={<PlusOutlined />} size="medium" onClick={showModal}>
             Novo filme
           </Button>
-          <NewMovieModal
+          <OpenModal
             isModalVisible={isModalVisible}
             setIsModalVisible={setIsModalVisible}
             tableData={movieList}
             setTableData={setMovieList}
+            content={modalContent}
+            handleCancel={cancelModalVisibility}
+            confirmLoading={confirmLoading}
+            title="Cadastrar novo filme"
           />
         </div>
         <Form form={form} component={false}>

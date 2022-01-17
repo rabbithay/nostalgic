@@ -1,15 +1,16 @@
 import React from 'react';
 import { Modal } from 'antd';
 
-export default function NewMovieModal({
+export default function OpenModal({
   isModalVisible,
   confirmLoading,
   content,
   handleCancel,
+  title,
 }) {
   return (
     <Modal
-      title="Cadastrar novo filme"
+      title={title}
       visible={isModalVisible}
       onCancel={handleCancel}
       confirmLoading={confirmLoading}
