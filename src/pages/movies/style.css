@@ -1,0 +1,13 @@
+
+.content {
+    padding: 100px 10vw 0px 10vw;
+    min-height: calc(100vh - 48px);
+    height: auto;
+}
+
+.plus-button {
+    margin: 10px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
