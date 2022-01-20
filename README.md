@@ -77,7 +77,7 @@ E as que ainda vão nascer:
 - [ ] integração com a [API que fiz dedicada](https://github.com/rabbithay/nostalgic-api)
 - [ ] rotas privadas, para manter o acesso dos dados apenas para administradores cadastrados
 - [ ] estoque de filmes
-- [ ] repaginada no visual
+- [ ] repaginada no visual e responsividade
 
 <br>
 
