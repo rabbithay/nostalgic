@@ -16,7 +16,6 @@ export function NewRentalForm({
       returnDate,
     } = values;
 
-    console.log(rentDate);
     const newRentalInfo = {
       id: (tableData[tableData.length - 1].id + 1),
       clientId,
@@ -58,14 +57,14 @@ export function NewRentalForm({
         name="clientId"
         rules={[{ required: true }]}
       >
-        <InputNumber />
+        <InputNumber min="1" />
       </Form.Item>
       <Form.Item
         label="Id do filme"
         name="movieId"
         rules={[{ required: true }]}
       >
-        <InputNumber />
+        <InputNumber min="1" />
       </Form.Item>
       <Form.Item
         label="Data da locação"
@@ -81,7 +80,7 @@ export function NewRentalForm({
         <DatePicker />
       </Form.Item>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-        <Button key="back" onClick={handleCancel}>
+        <Button key="back" onClick={handleCancel} style={{ marginRight: '10px' }}>
           Cancelar
         </Button>
         <Button type="primary" htmlType="submit" className="new-rental-button" loading={confirmLoading}>
