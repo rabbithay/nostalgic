@@ -21,5 +21,6 @@ module.exports = {
     'import/prefer-default-export': 0,
     'react/prop-types': ['off'],
     'react/jsx-props-no-spreading': 0,
+    'react/jsx-no-bind': 0,
   },
 };
